@@ -2,7 +2,7 @@
 title: Azure OpenAI
 ---
 
-<Snippet file="paper-release.mdx" />
+<Snippet file="security-compliance.mdx" />
 
 <Note> Mem0 Now Supports Azure OpenAI Models in TypeScript SDK </Note>
 
@@ -17,6 +17,8 @@ To use Azure OpenAI models, you have to set the `LLM_AZURE_OPENAI_API_KEY`, `LLM
 ```python Python
 import os
 from mem0 import Memory
+
+os.environ["OPENAI_API_KEY"] = "your-api-key" # used for embedding model
 
 os.environ["LLM_AZURE_OPENAI_API_KEY"] = "your-api-key"
 os.environ["LLM_AZURE_DEPLOYMENT"] = "your-deployment-name"

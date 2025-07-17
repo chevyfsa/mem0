@@ -1,6 +1,7 @@
 import argparse
 import json
 import os
+
 from dotenv import load_dotenv
 from tqdm import tqdm
 from zep_cloud import Message
@@ -18,12 +19,12 @@ class ZepAdd:
             self.load_data()
 
     def load_data(self):
-        with open(self.data_path, 'r') as f:
+        with open(self.data_path, "r") as f:
             self.data = json.load(f)
         return self.data
 
     def process_conversation(self, run_id, item, idx):
-        conversation = item['conversation']
+        conversation = item["conversation"]
 
         user_id = f"run_id_{run_id}_experiment_user_{idx}"
         session_id = f"run_id_{run_id}_experiment_session_{idx}"
@@ -40,7 +41,7 @@ class ZepAdd:
 
         print("Starting to add memories... for user", user_id)
         for key in tqdm(conversation.keys(), desc=f"Processing user {user_id}"):
-            if key in ['speaker_a', 'speaker_b'] or "date" in key:
+            if key in ["speaker_a", "speaker_b"] or "date" in key:
                 continue
 
             date_time_key = key + "_date_time"
@@ -50,11 +51,13 @@ class ZepAdd:
             for chat in tqdm(chats, desc=f"Adding chats for {key}", leave=False):
                 self.zep_client.memory.add(
                     session_id=session_id,
-                    messages=[Message(
-                        role=chat['speaker'],
-                        role_type="user",
-                        content=f"{timestamp}: {chat['text']}",
-                    )]
+                    messages=[
+                        Message(
+                            role=chat["speaker"],
+                            role_type="user",
+                            content=f"{timestamp}: {chat['text']}",
+                        )
+                    ],
                 )
 
     def process_all_conversations(self, run_id):
